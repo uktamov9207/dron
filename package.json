@@ -1,0 +1,21 @@
+{
+  "name": "aerodrone-platform",
+  "version": "1.0.0",
+  "description": "Jangovar Dronlar taqdimoti va Boshqaruv Markazi (Fullstack: Frontend + Backend + SQLite + Admin Panel)",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "postinstall": "cd backend && npm install",
+    "dev": "node --watch backend/server.js"
+  },
+  "keywords": [
+    "drones",
+    "aerodrone",
+    "military-tech",
+    "express",
+    "sqlite",
+    "admin-panel"
+  ],
+  "author": "Ilhomjon Toshmatov",
+  "license": "ISC"
+}

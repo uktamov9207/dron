@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AERODRONE - Admin Tizimiga Kirish</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body class="login-body">
+    <div class="login-bg-grid"></div>
+    <div class="login-card">
+        <div class="login-header">
+            <div class="login-logo"><i class="fa-solid fa-shield-halved"></i> AERO<span>ADMIN</span></div>
+            <p>Jangovar Dronlar Boshqaruv Markazi</p>
+        </div>
+        
+        <form id="login-form">
+            <div id="login-error" class="alert-box alert-error" style="display: none;"></div>
+            
+            <div class="form-group">
+                <label for="username"><i class="fa-solid fa-user-shield"></i> Foydalanuvchi nomi</label>
+                <input type="text" id="username" placeholder="Loginni kiriting" required autocomplete="username">
+            </div>
+
+            <div class="form-group">
+                <label for="password"><i class="fa-solid fa-lock"></i> Maxfiy parol</label>
+                <div class="password-wrap">
+                    <input type="password" id="password" placeholder="Parolni kiriting" required autocomplete="current-password">
+                    <button type="button" id="toggle-pwd" class="toggle-pwd"><i class="fa-solid fa-eye"></i></button>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-login" id="login-submit-btn">
+                <span>Tizimga Kirish</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </form>
+
+        <div class="login-footer">
+            <a href="/" target="_blank"><i class="fa-solid fa-arrow-left"></i> Asosiy saytga qaytish</a>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('login-form');
+        const errBox = document.getElementById('login-error');
+        const toggleBtn = document.getElementById('toggle-pwd');
+        const pwdInput = document.getElementById('password');
+
+        toggleBtn.addEventListener('click', () => {
+            const type = pwdInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            pwdInput.setAttribute('type', type);
+            toggleBtn.innerHTML = type === 'password' ? '<i class="fa-solid fa-eye"></i>' : '<i class="fa-solid fa-eye-slash"></i>';
+        });
+
+        // Agar oldin login qilgan bo'lsa va token yaroqli bo'lsa
+        const token = localStorage.getItem('aerodrone_token');
+        if (token) {
+            fetch('/api/auth/me', { headers: { 'Authorization': `Bearer ${token}` } })
+                .then(r => r.json())
+                .then(res => {
+                    if (res.success) window.location.href = '/admin';
+                });
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            errBox.style.display = 'none';
+            const username = document.getElementById('username').value.trim();
+            const password = pwdInput.value;
+
+            const submitBtn = document.getElementById('login-submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Tekshirilmoqda...';
+
+            try {
+                const res = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    localStorage.setItem('aerodrone_token', data.token);
+                    localStorage.setItem('aerodrone_admin', JSON.stringify(data.user));
+                    window.location.href = '/admin';
+                } else {
+                    errBox.textContent = data.message || 'Login yoki parol xato!';
+                    errBox.style.display = 'block';
+                }
+            } catch (err) {
+                errBox.textContent = 'Serverga ulanishda xatolik yuz berdi!';
+                errBox.style.display = 'block';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<span>Tizimga Kirish</span> <i class="fa-solid fa-arrow-right"></i>';
+            }
+        });
+    </script>
+</body>
+</html>

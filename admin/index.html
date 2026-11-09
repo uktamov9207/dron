@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AERODRONE - Boshqaruv Markazi (Admin Panel)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <div class="sidebar-logo"><i class="fa-solid fa-jet-fighter"></i> AERO<span>ADMIN</span></div>
+            </div>
+
+            <ul class="nav-links">
+                <li>
+                    <a class="nav-link active" data-tab="dashboard">
+                        <i class="fa-solid fa-chart-line"></i> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link" data-tab="drones">
+                        <i class="fa-solid fa-drone"></i> Dronlar Ro'yxati
+                        <span class="badge" id="sidebar-drone-count">0</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link" data-tab="messages">
+                        <i class="fa-solid fa-envelope-open-text"></i> Murojaatlar
+                        <span class="badge" id="sidebar-msg-count" style="background: #3b82f6;">0</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link" data-tab="settings">
+                        <i class="fa-solid fa-sliders"></i> Sayt Sozlamalari
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <button class="btn-logout" id="logout-btn">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Chiqish
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Topbar -->
+            <header class="admin-topbar">
+                <div class="topbar-title">
+                    <h2 id="current-tab-title">Dashboard</h2>
+                </div>
+                <div class="topbar-actions">
+                    <a href="/" target="_blank" class="btn-secondary">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i> Saytni Ko'rish
+                    </a>
+                    <div class="admin-user-pill">
+                        <div class="user-avatar" id="avatar-letter">A</div>
+                        <span id="admin-username-display" style="font-size: 13px; font-weight: 600;">admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-body">
+                <!-- ================= TAB 1: DASHBOARD ================= -->
+                <section class="tab-content active" id="tab-dashboard">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon red"><i class="fa-solid fa-jet-fighter-up"></i></div>
+                            <div class="stat-info">
+                                <h3 id="stat-total-drones">0</h3>
+                                <p>Jami Dronlar</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon green"><i class="fa-solid fa-circle-check"></i></div>
+                            <div class="stat-info">
+                                <h3 id="stat-active-drones">0</h3>
+                                <p>Faol Modellar</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon blue"><i class="fa-solid fa-envelope"></i></div>
+                            <div class="stat-info">
+                                <h3 id="stat-total-messages">0</h3>
+                                <p>Kelgan Murojaatlar</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon yellow"><i class="fa-solid fa-bell"></i></div>
+                            <div class="stat-info">
+                                <h3 id="stat-new-messages">0</h3>
+                                <p>Yangi Xabarlar</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-card">
+                        <div class="table-header">
+                            <div class="table-title"><i class="fa-solid fa-clock-rotate-left"></i> Oxirgi Qo'shilgan Dronlar</div>
+                            <button class="btn-primary" onclick="openDroneModal()"><i class="fa-solid fa-plus"></i> Yangi Dron</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Rasm</th>
+                                        <th>Nomi</th>
+                                        <th>Narxi</th>
+                                        <th>Sotiladi</th>
+                                        <th>Holat</th>
+                                        <th>Amallar</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recent-drones-body">
+                                    <!-- JS orqali to'ldiriladi -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= TAB 2: DRONES CRUD ================= -->
+                <section class="tab-content" id="tab-drones">
+                    <div class="table-card">
+                        <div class="table-header">
+                            <div class="table-title"><i class="fa-solid fa-drone"></i> Barcha Dronlar Katalogi</div>
+                            <div class="table-actions">
+                                <div class="search-box">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                    <input type="text" id="drone-search" placeholder="Qidirish...">
+                                </div>
+                                <button class="btn-primary" onclick="openDroneModal()"><i class="fa-solid fa-plus"></i> Yangi Dron Qo'shish</button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Tartib</th>
+                                        <th>Rasm</th>
+                                        <th>Dron Nomi</th>
+                                        <th>Narxi</th>
+                                        <th>Sotiladi / Cheklov</th>
+                                        <th>Holat</th>
+                                        <th>Amallar</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="all-drones-body">
+                                    <!-- JS orqali to'ldiriladi -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= TAB 3: MESSAGES ================= -->
+                <section class="tab-content" id="tab-messages">
+                    <div class="table-card">
+                        <div class="table-header">
+                            <div class="table-title"><i class="fa-solid fa-inbox"></i> Foydalanuvchilardan Kelgan Murojaatlar</div>
+                        </div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Ism</th>
+                                        <th>Telefon</th>
+                                        <th>Xabar / Izoh</th>
+                                        <th>Sana</th>
+                                        <th>Status</th>
+                                        <th>Amal</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="messages-body">
+                                    <!-- JS orqali to'ldiriladi -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= TAB 4: SETTINGS ================= -->
+                <section class="tab-content" id="tab-settings">
+                    <div class="table-card" style="padding: 24px; max-width: 800px;">
+                        <h3 style="margin-bottom: 20px; font-size: 16px;"><i class="fa-solid fa-phone"></i> Sayt Kontakt Ma'lumotlari</h3>
+                        <form id="settings-form">
+                            <div class="form-grid-2">
+                                <div class="form-group">
+                                    <label>Telefon raqam 1</label>
+                                    <input type="text" id="setting-phone1" placeholder="+998 88 727 92 07">
+                                </div>
+                                <div class="form-group">
+                                    <label>Telefon raqam 2</label>
+                                    <input type="text" id="setting-phone2" placeholder="+998 99 727 92 07">
+                                </div>
+                            </div>
+                            <div class="form-grid-2">
+                                <div class="form-group">
+                                    <label>Telegram username yoki havola</label>
+                                    <input type="text" id="setting-telegram" placeholder="@General9512">
+                                </div>
+                                <div class="form-group">
+                                    <label>Ish vaqti</label>
+                                    <input type="text" id="setting-work-hours" placeholder="Dushanba - Shanba, 09:00 - 18:00">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Sayt sarlavhasi</label>
+                                <input type="text" id="setting-site-title" placeholder="AERODRONE - Kelajakning Jangovar Dronlari">
+                            </div>
+                            <button type="submit" class="btn-primary" id="save-settings-btn"><i class="fa-solid fa-floppy-disk"></i> Kontaktlarni Saqlash</button>
+                        </form>
+
+                        <hr style="border: none; border-top: 1px solid var(--border); margin: 30px 0;">
+
+                        <h3 style="margin-bottom: 20px; font-size: 16px;"><i class="fa-solid fa-lock"></i> Admin Parolini O'zgartirish</h3>
+                        <form id="change-pwd-form" style="max-width: 450px;">
+                            <div class="form-group">
+                                <label>Joriy parol</label>
+                                <input type="password" id="curr-pwd" required placeholder="Hozirgi parol">
+                            </div>
+                            <div class="form-group">
+                                <label>Yangi parol</label>
+                                <input type="password" id="new-pwd" required placeholder="Yangi parol (kamida 6 ta belgi)">
+                            </div>
+                            <button type="submit" class="btn-primary"><i class="fa-solid fa-key"></i> Parolni Yangilash</button>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- ================= DRONE CREATE / EDIT MODAL ================= -->
+    <div class="admin-modal" id="drone-modal">
+        <div class="modal-content-wrap">
+            <div class="modal-header">
+                <h3 id="modal-title">Yangi Dron Qo'shish</h3>
+                <button class="modal-close-btn" onclick="closeDroneModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="drone-form">
+                <input type="hidden" id="drone-id">
+                <input type="hidden" id="existing-img">
+                
+                <div class="modal-body">
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label>Dron Nomi *</label>
+                            <input type="text" id="drone-name" required placeholder="Masalan: Bayraktar TB2 (Turkiya)">
+                        </div>
+                        <div class="form-group">
+                            <label>Narxi *</label>
+                            <input type="text" id="drone-price" required placeholder="Masalan: $5,000,000">
+                        </div>
+                    </div>
+
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label>Kimlarga sotiladi</label>
+                            <input type="text" id="drone-sold-to" placeholder="Do'st va strategik hamkorlar">
+                        </div>
+                        <div class="form-group">
+                            <label>Kimlar xarid qila olmaydi</label>
+                            <input type="text" id="drone-not-sold-to" placeholder="Terroristik guruhlar">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Qisqacha tavsif (Info)</label>
+                        <textarea id="drone-info" rows="2" placeholder="Dron haqida umumiy qisqacha ma'lumot..."></textarea>
+                    </div>
+
+                    <!-- Image Upload -->
+                    <div class="form-group">
+                        <label>Dron Rasmi (Yuklash yoki mavjudini qoldirish)</label>
+                        <input type="file" id="drone-file" accept="image/*">
+                        <div class="img-preview-wrap">
+                            <img id="drone-img-preview" src="/assets/drone1.png" class="img-preview" alt="Preview">
+                            <span style="font-size: 12px; color: var(--text-muted);" id="img-path-label">assets/drone1.png</span>
+                        </div>
+                    </div>
+
+                    <!-- Tech Specs (Dynamic) -->
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-gear"></i> Texnik ko'rsatkichlar ro'yxati</label>
+                        <div class="dynamic-list-box">
+                            <div class="dynamic-items-container" id="tech-specs-container"></div>
+                            <button type="button" class="btn-add-item" onclick="addTechSpecRow()"><i class="fa-solid fa-plus"></i> Ko'rsatkich qo'shish</button>
+                        </div>
+                    </div>
+
+                    <!-- Weapons -->
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-crosshairs"></i> Qurollanish</label>
+                        <input type="text" id="drone-weapons-title" placeholder="Sarlavha, masalan: Asosiy zarba beruvchi qurollari:" style="margin-bottom: 8px;">
+                        <div class="dynamic-list-box">
+                            <div class="dynamic-items-container" id="weapons-container"></div>
+                            <button type="button" class="btn-add-item" onclick="addWeaponRow()"><i class="fa-solid fa-plus"></i> Qurol qo'shish</button>
+                        </div>
+                        <input type="text" id="drone-weapons-note" placeholder="Izoh, masalan: 👉 Bu qurollar milliy ishlab chiqarish" style="margin-top: 8px;">
+                    </div>
+
+                    <!-- Sensors -->
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-satellite-dish"></i> Sensor va tizimlar</label>
+                        <div class="dynamic-list-box">
+                            <div class="dynamic-items-container" id="sensors-container"></div>
+                            <button type="button" class="btn-add-item" onclick="addSensorRow()"><i class="fa-solid fa-plus"></i> Sensor qo'shish</button>
+                        </div>
+                    </div>
+
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label>Tartib raqami</label>
+                            <input type="number" id="drone-order" value="1" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Saytda ko'rinishi</label>
+                            <select id="drone-active">
+                                <option value="true">Faol (Saytda ko'rinsin)</option>
+                                <option value="false">Nofaol (Yashirilsin)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeDroneModal()">Bekor qilish</button>
+                    <button type="submit" class="btn-primary" id="save-drone-btn"><i class="fa-solid fa-check"></i> Saqlash</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>

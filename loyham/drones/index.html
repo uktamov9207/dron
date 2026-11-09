@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jangovar Dronlar - Eng Ilg'or Texnologiyalar</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="cursor"></div>
+    <header class="navbar">
+        <div class="logo">AERO<span>DRONE</span></div>
+        <nav>
+            <ul>
+                <li><a href="#home">Asosiy</a></li>
+                <li><a href="#models">Modellar</a></li>
+                <li><a href="#contact" class="nav-contact-btn"><i class="fa-solid fa-headset"></i> Bog'lanish</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Kelajakning <span>Jangovar Dronlari</span></h1>
+            <p class="hero-desc">Jahon standartlariga to'liq javob beradigan, yuqori texnologiyali va eng xavfli zarbdor uchuvchisiz apparatlar ro'yxati bilan tanishing. Mukammallik va qudrat ramzi.</p>
+            <a href="#models" class="btn-primary">Katalogni Ko'rish <i class="fa-solid fa-arrow-down"></i></a>
+        </div>
+    </section>
+
+    <section id="models" class="drones-section">
+        <div class="section-heading">
+            <h2>Jangovar <span>Modellar (Top 15)</span></h2>
+            <p>Jahonning eng so'nggi va eng qudratli dronlari narxi hamda qoidalari</p>
+        </div>
+        
+        <div class="drones-grid" id="drones-container">
+            <!-- JS orqali joylanadi -->
+        </div>
+    </section>
+
+    <!-- Contact Modal -->
+    <div class="modal-overlay"></div>
+    <div class="contact-modal" id="contact-modal">
+        <button class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+        <div class="modal-header">
+            <div class="modal-icon-wrap">
+                <i class="fa-solid fa-tower-broadcast"></i>
+            </div>
+            <h2>Bizga Bog'lanish</h2>
+            <p>Quyidagi raqamlar va ijtimoiy tarmoqlar orqali biz bilan bog'laning</p>
+        </div>
+        <div class="modal-body">
+            <div class="contact-card">
+                <div class="contact-card-icon phone-icon">
+                    <i class="fa-solid fa-phone-volume"></i>
+                </div>
+                <div class="contact-card-info">
+                    <span class="contact-label">Telefon raqam 1</span>
+                    <a href="tel:+998887279207" class="contact-value" id="site-phone-1">+998 88 727 92 07</a>
+                </div>
+                <button class="copy-btn" id="copy-phone-1" data-copy="+998887279207"><i class="fa-regular fa-copy"></i> Nusxa</button>
+            </div>
+            <div class="contact-card">
+                <div class="contact-card-icon phone-icon">
+                    <i class="fa-solid fa-phone-volume"></i>
+                </div>
+                <div class="contact-card-info">
+                    <span class="contact-label">Telefon raqam 2</span>
+                    <a href="tel:+998997279207" class="contact-value" id="site-phone-2">+998 99 727 92 07</a>
+                </div>
+                <button class="copy-btn" id="copy-phone-2" data-copy="+998997279207"><i class="fa-regular fa-copy"></i> Nusxa</button>
+            </div>
+            <div class="contact-card telegram-card">
+                <div class="contact-card-icon tg-icon">
+                    <i class="fa-brands fa-telegram"></i>
+                </div>
+                <div class="contact-card-info">
+                    <span class="contact-label">Telegram</span>
+                    <a href="https://t.me/General9512" target="_blank" class="contact-value tg-value" id="site-telegram">@General9512</a>
+                </div>
+                <a href="https://t.me/General9512" target="_blank" class="tg-open-btn" id="site-telegram-btn"><i class="fa-solid fa-paper-plane"></i> Ochish</a>
+            </div>
+
+            <!-- Ariza qoldirish formasi -->
+            <div class="contact-form-wrap" style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.08);">
+                <h3 style="font-size: 15px; margin-bottom: 12px; color: #fff;"><i class="fa-solid fa-paper-plane" style="color: var(--primary);"></i> Tezkor xabar yuborish</h3>
+                <form id="public-contact-form">
+                    <div style="margin-bottom: 10px;">
+                        <input type="text" id="contact-name" placeholder="Ismingiz" required style="width: 100%; padding: 10px 12px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; font-size: 13px;">
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                        <input type="tel" id="contact-phone" placeholder="Telefon raqamingiz (+998...)" required style="width: 100%; padding: 10px 12px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; font-size: 13px;">
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <textarea id="contact-message" rows="2" placeholder="Qo'shimcha savol yoki qaysi dron qiziqtirmoqda?" style="width: 100%; padding: 10px 12px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; font-size: 13px; resize: vertical;"></textarea>
+                    </div>
+                    <button type="submit" id="contact-send-btn" class="btn-primary" style="width: 100%; justify-content: center; padding: 10px;">
+                        <i class="fa-solid fa-paper-plane"></i> Yuborish
+                    </button>
+                    <div id="contact-result-msg" style="display: none; margin-top: 10px; font-size: 13px; text-align: center;"></div>
+                </form>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p><i class="fa-solid fa-clock"></i> Ish vaqti: Dushanba - Shanba, 09:00 - 18:00</p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <h2>Mukammal Dizayn Va Raqamlashtirish</h2>
+            <p>Ushbu sayt faqatgina eng so'nggi texnologiyalar haqida ma'lumot berish maqsadida yaratildi.</p>
+        </div>
+        <div class="footer-bottom">
+            Dasturchi: <span class="developer-name">Ilhomjon Toshmatov</span> | <span id="year"></span> © Barcha huquqlar himoyalangan.
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
